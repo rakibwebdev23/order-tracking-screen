@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -13,45 +14,66 @@ interface SupportDialogProps {
   onOpenChange: (open: boolean) => void;
 }
 
-export default function SupportDialog({
-  open,
-  onOpenChange,
-}: SupportDialogProps) {
+type SupportMode = "choose" | "contact" | "report" | "done";
+
+export default function SupportDialog({ open, onOpenChange }: SupportDialogProps) {
+  const [mode, setMode] = useState<SupportMode>("choose");
+  const [message, setMessage] = useState("");
+  const [reported, setReported] = useState(false);
+
+  useEffect(() => {
+    if (!open) {
+      setMode("choose");
+      setMessage("");
+      setReported(false);
+    }
+  }, [open]);
+
+  const isReport = mode === "report" || (mode === "done" && reported);
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-md">
-        <DialogHeader>
-          <DialogTitle>Contact support</DialogTitle>
-
-          <DialogDescription>
-            Need help with your delivery? Our support team
-            can help you with your order.
-          </DialogDescription>
-        </DialogHeader>
-
-        <div className="space-y-3">
-          <button
-            type="button"
-            className="w-full cursor-pointer rounded-lg border border-slate-200 px-4 py-3 text-left text-sm font-medium text-slate-900 transition hover:bg-slate-50"
-            onClick={() => {
-              onOpenChange(false);
-              alert("Contact support selected.");
-            }}
-          >
-            Contact support
-          </button>
-
-          <button
-            type="button"
-            className="w-full cursor-pointer rounded-lg border border-slate-200 px-4 py-3 text-left text-sm font-medium text-slate-900 transition hover:bg-slate-50"
-            onClick={() => {
-              onOpenChange(false);
-              alert("Delivery issue selected.");
-            }}
-          >
-            Report delivery issue
-          </button>
-        </div>
+      <DialogContent className="support-dialog bg-white sm:max-w-md">
+        {mode === "done" ? (
+          <div className="support-confirmation" role="status">
+            <span className="confirmation-mark">✓</span>
+            <DialogHeader>
+              <DialogTitle>{isReport ? "Report noted" : "Message prepared"}</DialogTitle>
+              <DialogDescription>This is a demo experience, so your message has not been sent to a support team.</DialogDescription>
+            </DialogHeader>
+            <button type="button" className="support-primary" onClick={() => onOpenChange(false)}>Done</button>
+          </div>
+        ) : mode === "choose" ? (
+          <>
+            <DialogHeader>
+              <DialogTitle>How can we help?</DialogTitle>
+              <DialogDescription>Choose what you need help with for this order.</DialogDescription>
+            </DialogHeader>
+            <div className="support-options">
+              <button type="button" onClick={() => setMode("contact")}>
+                <strong>Contact support</strong><span>Ask a question about your order</span>
+              </button>
+              <button type="button" onClick={() => setMode("report")}>
+                <strong>Report a delivery issue</strong><span>Tell us what happened</span>
+              </button>
+            </div>
+          </>
+        ) : (
+          <>
+            <DialogHeader>
+              <DialogTitle>{isReport ? "Report a delivery issue" : "Contact support"}</DialogTitle>
+              <DialogDescription>{isReport ? "Describe the problem with this delivery." : "Tell us how we can help with your order."}</DialogDescription>
+            </DialogHeader>
+            <form className="support-form" onSubmit={(event) => { event.preventDefault(); setReported(isReport); setMode("done"); }}>
+              <label htmlFor="support-message">{isReport ? "What happened?" : "Your message"}</label>
+              <textarea id="support-message" value={message} onChange={(event) => setMessage(event.target.value)} placeholder={isReport ? "Add a few details about the delivery…" : "Write your question…"} required rows={4} />
+              <div className="support-form-actions">
+                <button type="button" className="support-back" onClick={() => setMode("choose")}>Back</button>
+                <button type="submit" className="support-primary">Continue</button>
+              </div>
+            </form>
+          </>
+        )}
       </DialogContent>
     </Dialog>
   );

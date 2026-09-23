@@ -5,78 +5,48 @@ interface StatusTimelineProps {
   items: TimelineItem[];
 }
 
-export default function StatusTimeline({
-  items,
-}: StatusTimelineProps) {
+export default function StatusTimeline({ items }: StatusTimelineProps) {
   return (
-    <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-      <h2 className="text-base font-semibold text-slate-950">
-        Delivery progress
-      </h2>
+    <section className="timeline-card" aria-labelledby="delivery-progress-title">
+      <div className="timeline-heading">
+        <div>
+          <p className="section-eyebrow">ORDER UPDATES</p>
+          <h2 id="delivery-progress-title">Delivery progress</h2>
+        </div>
+        <span className="timeline-total">{items.length} steps</span>
+      </div>
 
-      <div className="mt-6">
-        {items.map((item, index) => {
-          const last = index === items.length - 1;
-
-          return (
-            <div
-              key={item.id}
-              className="flex gap-3"
-            >
-              <div className="flex flex-col items-center">
-                <div
-                  className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full border ${
-                    item.status === "completed"
-                      ? "border-slate-900 bg-slate-900 text-white"
-                      : item.status === "current"
-                        ? "border-slate-900 bg-white text-slate-900"
-                        : "border-slate-200 bg-white text-slate-400"
-                  }`}
-                >
-                  {item.status === "completed" ? (
-                    <Check
-                      size={16}
-                      strokeWidth={2.5}
-                    />
-                  ) : (
-                    <span className="h-2.5 w-2.5 rounded-full bg-current" />
+      {items.length === 0 ? (
+        <p className="timeline-empty">There are no delivery updates yet. Check back later.</p>
+      ) : (
+        <ol className="timeline-list">
+          {items.map((item, index) => {
+            const last = index === items.length - 1;
+            return (
+              <li
+                key={item.id}
+                className={`timeline-step ${item.status}`}
+                aria-current={item.status === "current" ? "step" : undefined}
+              >
+                <span className="timeline-marker" aria-hidden="true">
+                  {item.status === "completed" ? <Check size={14} strokeWidth={2.5} /> : null}
+                </span>
+                {!last && <span className="timeline-connector" aria-hidden="true" />}
+                <div className="timeline-content">
+                  <div className="timeline-title-row">
+                    <h3>{item.title}</h3>
+                    {item.status === "current" && <span className="current-label">CURRENT</span>}
+                  </div>
+                  <p>{item.description}</p>
+                  {(item.date !== "—" || item.time !== "—") && (
+                    <time>{[item.date, item.time].filter((value) => value !== "—").join(" · ")}</time>
                   )}
                 </div>
-
-                {!last && (
-                  <div
-                    className={`h-12 w-px ${
-                      item.status === "completed"
-                        ? "bg-slate-900"
-                        : "bg-slate-200"
-                    }`}
-                  />
-                )}
-              </div>
-
-              <div className="pb-6 last:pb-0">
-                <h3
-                  className={`text-sm font-semibold ${
-                    item.status === "pending"
-                      ? "text-slate-400"
-                      : "text-slate-900"
-                  }`}
-                >
-                  {item.title}
-                </h3>
-
-                <p className="mt-1 text-xs leading-5 text-slate-500">
-                  {item.description}
-                </p>
-
-                <p className="mt-1 text-xs text-slate-400">
-                  {item.date} · {item.time}
-                </p>
-              </div>
-            </div>
-          );
-        })}
-      </div>
+              </li>
+            );
+          })}
+        </ol>
+      )}
     </section>
   );
 }

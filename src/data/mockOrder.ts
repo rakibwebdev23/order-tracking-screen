@@ -42,8 +42,8 @@ const delayedTimeline = [
   },
   {
     id: "4",
-    title: "Out for delivery",
-    description: "Your order is on its way.",
+    title: "Delivery delayed",
+    description: "The estimated delivery window has passed.",
     date: "Sep 23, 2026",
     time: "09:30 AM",
     status: "current" as const,
@@ -151,7 +151,7 @@ const orders: Record<OrderStatus, Order> = {
     statusTitle: "Your delivery is delayed",
     statusDescription:
       "Your estimated delivery time has passed. We’re sorry for the delay.",
-    estimatedDelivery: "September 25, 2026",
+    estimatedDelivery: "September 23, 2026",
     estimatedTime: "By 8:00 PM",
     products,
     timeline: delayedTimeline,

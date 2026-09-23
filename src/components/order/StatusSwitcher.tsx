@@ -32,7 +32,7 @@ export default function StatusSwitcher({
   return (
     <section className="mt-5">
       <p className="mb-2 text-xs font-medium text-slate-500">
-        View delivery state
+        Preview order status
       </p>
 
       <div className="flex gap-2 overflow-x-auto p-2">
