@@ -11,7 +11,7 @@ export default function CommonWrapper({
 }: CommonWrapperProps) {
   return (
     <main
-      className={`mx-auto min-h-screen w-full max-w-2xl px-4 py-5 sm:px-6 ${className}`}
+      className={`mx-auto min-h-screen w-full max-w-4xl px-4 py-5 sm:px-6 ${className}`}
     >
       {children}
     </main>

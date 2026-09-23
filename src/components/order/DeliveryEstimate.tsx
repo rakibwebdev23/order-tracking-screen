@@ -1,5 +1,4 @@
 import { CalendarDays, Clock3 } from "lucide-react";
-import SectionCard from "@/components/common/SectionCard";
 
 interface DeliveryEstimateProps {
   date: string;
@@ -11,24 +10,42 @@ export default function DeliveryEstimate({
   time,
 }: DeliveryEstimateProps) {
   return (
-    <SectionCard>
-      <h2 className="mb-4 text-sm font-semibold text-slate-900">
-        Delivery estimate
+    <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+      <h2 className="text-base font-semibold text-slate-950">
+        Estimated delivery
       </h2>
 
-      <div className="grid grid-cols-2 gap-3">
-        <div className="rounded-xl bg-slate-50 p-3">
-          <CalendarDays size={18} className="mb-2 text-slate-600" />
-          <p className="text-xs text-slate-500">Date</p>
-          <p className="mt-1 text-sm font-medium text-slate-900">{date}</p>
+      <div className="mt-4 grid grid-cols-2 gap-3">
+        <div className="rounded-xl bg-slate-50 p-4">
+          <CalendarDays
+            size={18}
+            className="text-slate-600"
+          />
+
+          <p className="mt-3 text-xs text-slate-500">
+            Date
+          </p>
+
+          <p className="mt-1 text-sm font-semibold text-slate-900">
+            {date}
+          </p>
         </div>
 
-        <div className="rounded-xl bg-slate-50 p-3">
-          <Clock3 size={18} className="mb-2 text-slate-600" />
-          <p className="text-xs text-slate-500">Time</p>
-          <p className="mt-1 text-sm font-medium text-slate-900">{time}</p>
+        <div className="rounded-xl bg-slate-50 p-4">
+          <Clock3
+            size={18}
+            className="text-slate-600"
+          />
+
+          <p className="mt-3 text-xs text-slate-500">
+            Time
+          </p>
+
+          <p className="mt-1 text-sm font-semibold text-slate-900">
+            {time}
+          </p>
         </div>
       </div>
-    </SectionCard>
+    </section>
   );
 }

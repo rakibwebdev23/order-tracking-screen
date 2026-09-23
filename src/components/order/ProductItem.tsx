@@ -1,19 +1,19 @@
-import Image from "next/image";
+import { Package } from "lucide-react";
 import { Product } from "@/types/order";
 
 interface ProductItemProps {
   product: Product;
 }
 
-export default function ProductItem({ product }: ProductItemProps) {
+export default function ProductItem({
+  product,
+}: ProductItemProps) {
   return (
-    <div className="flex gap-3 py-3 first:pt-0 last:pb-0">
-      <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-xl bg-slate-100">
-        <Image
-          src={product.image}
-          alt={product.name}
-          fill
-          className="object-cover"
+    <div className="flex items-center gap-3 py-3">
+      <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-slate-100">
+        <Package
+          size={22}
+          className="text-slate-500"
         />
       </div>
 
@@ -23,7 +23,7 @@ export default function ProductItem({ product }: ProductItemProps) {
         </h3>
 
         <p className="mt-1 text-xs text-slate-500">
-          Qty: {product.quantity}
+          Quantity: {product.quantity}
         </p>
       </div>
 
